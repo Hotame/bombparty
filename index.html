@@ -16,4 +16,30 @@
   <span id="bottom_panel"></span>
 </body>
 
+<template id="settings">
+  <h3>Settings</h3>
+  <div class="checkbox-wrapper">
+    <label for="anyone_can_start_input">Anyone can start a game</label>
+    <input type="checkbox" id="anyone_can_start_input"
+      onchange="update_settings(this)">
+  </div>
+
+  <div class="inline-input-group">
+    <div class="input-pair">
+      <label for="seconds_input">Seconds for each turn</label>
+      <input type="number" id="seconds_input" onchange="update_settings(this)" />
+    </div>
+
+    <div class="input-pair">
+      <label for="lives_input">Lives at start of game</label>
+      <input type="number" id="lives_input" onchange="update_settings(this)" />
+    </div>
+  </div>
+  <label for="alphabet_input">Custom alphabet (empty is none)</label>
+  <input type="text" id="alphabet_input" onchange="update_settings(this)" />
+
+  <label for="custom_dictionary_input">Custom dictionary (space separated words)</label>
+  <input type="file" id="custom_dictionary_input" onchange="update_settings(this)" />
+</template>
+
 </html>
