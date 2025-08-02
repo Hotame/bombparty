@@ -1,6 +1,8 @@
 <html>
+
 <head>
   <link rel="stylesheet" href="css.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <script src="https://unpkg.com/peerjs@1.5.5/dist/peerjs.min.js"></script>
   <script src="./constants.js"></script>
   <script src="./messages.js"></script>
@@ -9,19 +11,31 @@
 </head>
 
 <body>
-  <span id="top_panel"></span>
-  <hr>
-  <game>Loading...</game>
-  <hr>
-  <span id="bottom_panel"></span>
+  <nav id="top-nav">
+    <i id="menu-icon" class="fas fa-bars"></i>
+    <i id="settings-icon" class="fas fa-cog"></i>
+  </nav>
+  <div id="right-panel" class="side-panel right-panel"></div>
+  <div id="left-panel" class="side-panel right-panel">
+    <br>
+    <div id="left-panel-label">Players in Game</div>
+    <ul id='players'></ul>
+    <br>
+    <div class="button-row">
+      <button type="button" onclick="changeName()">Change Name</button>
+      <a href="" id="invite" onclick="insertJoinURL(this)" target="_blank">Invite Players</a>
+    </div>
+  </div>
+
+  <game style="margin: 0 auto;">Loading...</game>
 </body>
+
 
 <template id="settings">
   <h3>Settings</h3>
   <div class="checkbox-wrapper">
     <label for="anyone_can_start_input">Anyone can start a game</label>
-    <input type="checkbox" id="anyone_can_start_input"
-      onchange="update_settings(this)">
+    <input type="checkbox" id="anyone_can_start_input" onchange="update_settings(this)">
   </div>
 
   <div class="inline-input-group">
@@ -35,11 +49,23 @@
       <input type="number" id="lives_input" onchange="update_settings(this)" />
     </div>
   </div>
-  <label for="alphabet_input">Custom alphabet (empty is none)</label>
-  <input type="text" id="alphabet_input" onchange="update_settings(this)" />
+  <label for="alphabet_input">Custom alphabet</label>
+  <input type="text" id="alphabet_input" onchange="update_settings(this)" style="margin-top: -10px;" />
 
-  <label for="custom_dictionary_input">Custom dictionary (space separated words)</label>
-  <input type="file" id="custom_dictionary_input" onchange="update_settings(this)" />
+  <label for="custom_dictionary_input">Custom dictionary</label>
+  <input type="file" id="custom_dictionary_input" onchange="update_settings(this)" style="margin-top: -10px;" />
+
+</template>
+
+<template id="game">
+  <span id="prompt"></span>
+  <div style="display: grid; grid-auto-flow: column;">
+    <span id="input"></span><span id="timer"></span>
+  </div>
+  <div id="bonus"></div>
+  <span id="order"></span>
+  <div id="buttons"></div>
+  <br>
 </template>
 
 </html>

@@ -11,21 +11,12 @@ function x(s) {
 }
 
 function insert_game_html() {
-  document.getElementsByTagName("game")[0].innerHTML = `
-        <span id="prompt"></span>
-        <div style="display: grid; grid-auto-flow: column;">
-            <span id="input"></span><span id="timer"></span>
-        </div>
-        <div id="bonus"></div>
-        <span id="order"></span>
-        <h3>Username:
-            <span id="username"></span>
-            <button type="button" onclick="changeName()">change</button>
-        </h3>
-        <div id="buttons"></div>
-        <h2>Players on server:</h1>
-        <ul id='players'></ul>
-    `;
+  let gamePanel = document.getElementsByTagName("game")[0];
+  gamePanel.replaceChildren(
+    document.getElementById("game").content.cloneNode(true)
+  );
+  styleGameContainer();
+
   [
     "prompt",
     "bonus",
@@ -40,10 +31,13 @@ function insert_game_html() {
   });
   timerLoop();
 
-  let host_panel = document.getElementById("bottom_panel");
-  if (host_panel) {
-    host_panel.replaceChildren(document.getElementById("settings").content.cloneNode(true));
-    document.getElementById("anyone_can_start_input").value = DEFAULT_ANYONE_CAN_START;
+  if (IS_HOST) {
+    let host_panel = document.getElementById("right-panel");
+    host_panel.replaceChildren(
+      document.getElementById("settings").content.cloneNode(true)
+    );
+    document.getElementById("anyone_can_start_input").value =
+      DEFAULT_ANYONE_CAN_START;
     document.getElementById("seconds_input").value = DEFAULT_SECONDS;
     document.getElementById("lives_input").value = DEFAULT_LIVES;
     document.getElementById("alphabet_input").value = DEFAULT_ALPHABET;
@@ -51,32 +45,29 @@ function insert_game_html() {
 }
 
 function render(state, label) {
-  elems["username"].innerHTML = x(state.players[label]);
-  elems["buttons"].innerHTML = `
-        ${
-          label in state.queue
-            ? '<button type="button" onclick="leaveGame()">Leave game</button>'
-            : '<button type="button" onclick="enterGame()">Join next game</button>'
-        }
-    `;
+  const buttonsElem = elems["buttons"];
+
   renderPlayers(state);
 
   if (!state.started) {
     ["prompt", "bonus", "input", "timer", "order"].forEach(
       (x) => (elems[x].innerHTML = "")
     );
+
     if (label in state.queue) {
       if (state.settings.anyone_can_start || IS_HOST) {
-        elems["buttons"].innerHTML =
-          '<button onclick="startGame()">Start Game</button>' +
-          elems["buttons"].innerHTML;
-      } else {
-        elems["buttons"].innerHTML =
-          "<button disabled>Waiting for host to start</button>" +
-          elems["buttons"].innerHTML;
+        buttonsElem.innerHTML = `
+          <div class="pre-game-buttons">
+            <button class="game-core-button" id="start-button" onclick="startGame()">Start Game</button>
+            <button type="button" class="game-core-button leave-game-btn" onclick="leaveGame()">Leave game</button>
+          </div>
+        `;
       }
+    } else {
+      buttonsElem.innerHTML = `<button type="button" class="pre-game-buttons" style="margin-top: -1.4rem;" onclick="enterGame()">Join next game</button>`;
     }
   } else {
+    styleGameContainer();
     renderTimer(state);
     renderPrompt(state);
     renderBonus(state, label);
@@ -164,11 +155,9 @@ function kickInOrder(label) {
 function renderPlayers(state) {
   elems["players"].innerHTML = Object.keys(state.players)
     .map((label) => {
-      let name = x(state.players[label]);
+      let name = x(state.players[label]).substring(0, 20);
       let queued = label in state.queue;
-      if (queued) {
-        name = `<b>${name}</b>`;
-      }
+      name = `<b>${name}</b>`;
       return `<li ${queued ? "" : 'style="list-style:none"'}>${name}</li>`;
     })
     .join("");
@@ -192,4 +181,115 @@ function hearts(times) {
   return (String.fromCodePoint(10084) + String.fromCodePoint(65039)).repeat(
     times
   );
+}
+
+function insertJoinURL(url) {
+  const inviteAnchor = document.getElementById("invite");
+  if (!inviteAnchor) {
+    console.warn("No element with id 'invite' found");
+    return;
+  }
+
+  inviteAnchor.href = url;
+  inviteAnchor.textContent = "Invite Players";
+  inviteAnchor.target = "_blank";
+  inviteAnchor.onclick = function (event) {
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        console.log("Copied to clipboard:", url);
+      })
+      .catch((err) => {
+        console.error("Clipboard copy failed:", err);
+      });
+  };
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (IS_HOST) {
+    const settingsIcon = document.getElementById("settings-icon");
+    const menuIcon = document.getElementById("menu-icon");
+
+    settingsIcon.addEventListener("click", () => togglePanel("right"));
+    menuIcon.addEventListener("click", () => togglePanel("left"));
+
+    const leftPanel = document.getElementById("left-panel");
+
+    leftPanel.addEventListener("scroll", () => {
+      if (leftPanel.scrollTop === 0) {
+        menuIcon.style.display = "block";
+      } else {
+        menuIcon.style.display = "none";
+      }
+    });
+
+    if (leftPanel.scrollTop === 0) {
+      menuIcon.style.display = "block";
+    } else {
+      menuIcon.style.display = "none";
+    }
+  } else {
+    document.getElementById("settings-icon").classList.add("hidden");
+  }
+});
+
+function togglePanel(side) {
+  const leftPanel = document.getElementById("left-panel");
+  const rightPanel = document.getElementById("right-panel");
+  const settings = document.getElementById("settings");
+
+  if (side === "left") {
+    const isOpen = leftPanel.classList.contains("open");
+
+    if (rightPanel.classList.contains("open")) {
+      rightPanel.classList.remove("open");
+      settings.classList.remove("shift-right");
+    }
+
+    if (isOpen) {
+      leftPanel.classList.remove("open");
+      settings.classList.remove("shift-left");
+    } else {
+      leftPanel.classList.add("open");
+      settings.classList.add("shift-left");
+    }
+  } else if (side === "right") {
+    const isOpen = rightPanel.classList.contains("open");
+
+    if (leftPanel.classList.contains("open")) {
+      leftPanel.classList.remove("open");
+      settings.classList.remove("shift-left");
+    }
+
+    if (isOpen) {
+      rightPanel.classList.remove("open");
+      settings.classList.remove("shift-right");
+    } else {
+      rightPanel.classList.add("open");
+      settings.classList.add("shift-right");
+    }
+  }
+}
+
+function styleGameContainer() {
+  const gameContainer = document.getElementsByTagName("game")[0];
+  if (!gameContainer) return;
+
+  gameContainer.style.position = "relative";
+  gameContainer.style.top = "unset";
+  gameContainer.style.left = "unset";
+  gameContainer.style.transform = "none";
+
+  gameContainer.style.display = "block";
+  gameContainer.style.margin = "0 auto";
+  gameContainer.style.width = "auto";
+  gameContainer.style.background = "var(--card-bg)";
+  gameContainer.style.borderRadius = "24px";
+  gameContainer.style.boxShadow =
+    "0 10px 25px rgba(0, 0, 0, 0.22), 0 5px 10px rgba(0, 0, 0, 0.15)";
+  gameContainer.style.padding = "2rem 2.5rem";
+  gameContainer.style.fontWeight = "500";
+  gameContainer.style.color = "var(--text-color)";
+  gameContainer.style.transition =
+    "box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)";
 }

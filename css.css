@@ -1,4 +1,3 @@
-/* === Dark Theme Variables === */
 :root {
     --bg-color: #121212;
     --card-bg: #1f1f1f;
@@ -17,7 +16,6 @@
     --button-hover-color: #ffffff;
 }
 
-/* === Reset and Base === */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -51,9 +49,307 @@ body>* {
     margin: 0 auto;
 }
 
-/* Panels */
-#top_panel,
-#bottom_panel {
+a:visited {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hidden {
+  display: none !important;
+}
+
+img {
+    width: 26%;
+    transform: translateX(150%);
+}
+
+#top-nav {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 9999;
+    pointer-events: auto;
+    padding: 0 1rem;
+}
+
+#settings-icon,
+#menu-icon {
+    position: static;
+    font-size: 1.5rem;
+    cursor: pointer;
+    user-select: none;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+#settings-icon {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transform: translate(-40%, 5%);
+}
+
+#settings-icon:hover {
+    color: var(--primary-color);
+}
+
+#menu-icon {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    transform: translate(25%, 4%);
+}
+
+#menu-icon:hover {
+    color: var(--primary-color);
+}
+
+.side-panel {
+    width: 250px;
+    background: var(--card-bg);
+    height: 100%;
+    transition: margin 0.3s ease;
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    color: var(--text-color);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+}
+
+#left-panel {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 30%;
+    max-width: 90vw;
+    max-height: 90vh;
+    min-height: 400px;
+    height: auto;
+    z-index: 1000;
+    padding: 1.5rem 2.5rem;
+    background: var(--card-bg);
+    border-radius: 0px;
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.25),
+        0 1px 4px rgba(0, 0, 0, 0.15);
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--text-color);
+    transform: translateX(-100%);
+    opacity: 0;
+    pointer-events: none;
+    overflow-y: auto;
+    transition:
+        transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
+        opacity 0.4s ease-in-out;
+    will-change: transform, opacity;
+}
+
+#left-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+#left-panel::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 4px;
+}
+
+#left-panel.open {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#left-panel-label {
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    user-select: none;
+    letter-spacing: 0.03em;
+    text-align: center;
+    padding-left: 4px;
+    text-shadow:
+        0 0 5px rgba(239, 131, 84, 0.5),
+        0 0 10px rgba(239, 131, 84, 0.3);
+}
+
+#left-panel a {
+    display: inline-block;
+    background: var(--button-bg);
+    border: none;
+    color: var(--text-color);
+    font-weight: 700;
+    padding: 0.85rem 2.5rem;
+    font-size: 1.125rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.25s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    user-select: none;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    text-align: center;
+}
+
+#left-panel .button-row {
+    display: flex;
+    gap: 0.7rem;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+#left-panel .button-row button,
+#left-panel .button-row a {
+    padding: 0.8rem 1.8rem;
+    font-size: 1rem;
+    margin-left: 5px;
+    margin-top: -10px;
+}
+
+#left-panel .button-row button,
+#left-panel .button-row a {
+    flex-shrink: 0;
+}
+
+
+#left-panel a:hover {
+    background: #555555;
+    color: var(--button-hover-color);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px) scale(1.05);
+}
+
+#left-panel a:active {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+#right-panel {
+    position: fixed;
+    right: 0;
+    width: 340px;
+    max-width: 90vw;
+    height: auto;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.5rem 2.5rem;
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25),
+        0 1px 4px rgba(0, 0, 0, 0.15);
+    transform: translateX(100%);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+        transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
+        opacity 0.4s ease-in-out;
+    will-change: transform, opacity;
+}
+
+input:focus {
+    outline: none;
+}
+
+#right-panel input[type="checkbox"] {
+    appearance: none;
+    width: 1.35rem;
+    height: 1.35rem;
+    border: 2px solid var(--input-border);
+    border-radius: 6px;
+    background-color: var(--input-bg);
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+#right-panel input[type="checkbox"]::before {
+    content: "";
+    width: 0.6rem;
+    height: 0.6rem;
+    transform: scale(0);
+    transition: transform 0.2s ease-in-out;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+    box-shadow: 0 0 0 2px var(--primary-color);
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 15%, 80% 0%, 43% 62%);
+}
+
+#right-panel input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
+
+#right-panel input[type="checkbox"]:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px var(--input-box-shadow);
+}
+
+#right-panel.open {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#settings.shift-left {
+    margin-left: 25%;
+}
+
+#settings.shift-right {
+    margin-right: 25%;
+}
+
+@keyframes slideInRight {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+.right-panel-animating {
+    animation-duration: 0.6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
+#left-panel,
+#right-panel {
     background: var(--card-bg);
     border-radius: 20px;
     padding: 1.5rem 2.5rem;
@@ -68,29 +364,7 @@ body>* {
         transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#top_panel:hover,
-#bottom_panel:hover {
-    box-shadow:
-        0 12px 24px rgba(0, 0, 0, 0.3),
-        0 6px 12px rgba(0, 0, 0, 0.2);
-    transform: translateY(-4px) scale(1.02);
-}
-
-#bottom_panel {
-    position: fixed;
-    top: 1.5rem;
-    right: 1.5rem;
-    width: 340px;
-    max-width: 90vw;
-    z-index: 1000;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
-
-/* Checkbox and label inline wrapper */
-#bottom_panel .checkbox-wrapper {
+#right-panel .checkbox-wrapper {
     display: flex;
     align-items: center;
     gap: 0.6rem;
@@ -98,26 +372,37 @@ body>* {
     cursor: pointer;
 }
 
-/* Checkbox styling */
-#bottom_panel input[type="checkbox"] {
+#right-panel input[type="checkbox"] {
     transform: scale(1.3);
-    margin-left: 1.3rem;
+    margin-left: 0.6rem;
     filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.5));
     cursor: pointer;
 }
 
-/* Settings labels */
-#bottom_panel label {
+#right-panel label {
     font-weight: 600;
     color: var(--text-color);
     margin-bottom: 0.4rem;
     display: block;
     user-select: none;
+    text-align: left;
 }
 
-/* Settings inputs */
-#bottom_panel input[type="number"],
-#bottom_panel input[type="text"] {
+#right-panel h3 {
+    margin-top: -0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    line-height: 1.3;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#right-panel input[type="number"],
+#right-panel input[type="text"] {
     padding: 0.65rem 1.2rem;
     border-radius: 16px;
     border: 2px solid var(--input-border);
@@ -130,22 +415,47 @@ body>* {
     box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.7);
 }
 
-/* Focus state */
-#bottom_panel input[type="number"]:focus,
-#bottom_panel input[type="text"]:focus {
+#right-panel input[type="number"]:focus,
+#right-panel input[type="text"]:focus {
     border-color: var(--input-border-focus);
     box-shadow: 0 0 12px var(--input-box-shadow);
 }
 
-/* File input */
-#bottom_panel input[type="file"] {
-    margin-top: 0.4rem;
-    cursor: pointer;
+#right-panel input[type="file"] {
+    padding: 0.5rem;
     font-weight: 600;
+    font-size: 0.75rem;
     color: var(--text-color);
+    background-color: var(--input-bg);
+    border: 2px solid var(--input-border);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Inline input group for seconds and lives */
+#right-panel input[type="file"]:focus {
+    outline: none;
+    border-color: var(--input-border-focus);
+    box-shadow: 0 0 12px var(--input-box-shadow);
+}
+
+#right-panel input[type="file"]::-webkit-file-upload-button {
+    margin-right: 12px;
+    padding: 0.5rem 1.2rem;
+    background-color: var(--button-bg);
+    color: var(--text-color);
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#right-panel input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: var(--button-hover-bg);
+    color: var(--button-hover-color);
+}
+
 .inline-input-group {
     display: flex;
     flex-direction: column;
@@ -165,15 +475,21 @@ body>* {
     white-space: nowrap;
 }
 
-.input-pair input[type="number"] {
-    width: 4rem;
-    padding: 0.4rem 0.6rem;
+#right-panel input[type="number"] {
+    width: 3.5rem;
+    padding: 0.5rem 0.8rem;
     font-weight: 600;
     font-size: 1rem;
     border-radius: 12px;
+    border: 2px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text-color);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    outline-offset: 2px;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.7);
+    margin-left: 0.6rem;
 }
 
-/* Error and reconnect message styles */
 body>h1,
 body>h2 {
     text-align: center;
@@ -192,7 +508,6 @@ body>h2 a:hover {
     text-decoration: none;
 }
 
-/* Host it yourself button link */
 .reconnect-suggestion {
     display: inline-block;
     margin-top: 1rem;
@@ -218,7 +533,23 @@ body>h2 a:hover {
     transform: translateY(0);
 }
 
-/* Username panel */
+h3 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    user-select: text;
+    white-space: nowrap;
+    font-size: 1.5rem;
+}
+
+h3 #username {
+    color: var(--primary-color);
+    font-weight: 900;
+}
+
 #username-panel {
     display: flex;
     flex-direction: column;
@@ -230,27 +561,17 @@ body>h2 a:hover {
     max-width: 360px;
 }
 
-h3 {
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: var(--text-color);
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    user-select: text;
-}
 
-h3 #username {
-    color: var(--primary-color);
-    font-weight: 900;
-}
-
-/* Join next game button */
 #buttons {
     width: 100%;
     display: flex;
     justify-content: center;
     gap: 1.2rem;
+}
+
+.leave-game-btn {
+    margin-top: 2rem;
+    display: block;
 }
 
 button {
@@ -291,26 +612,51 @@ button:disabled {
 game {
     display: block;
     margin: 0 auto;
+    margin-left: -25px;
+    /* shift left */
+    width: auto;
     background: var(--card-bg);
     border-radius: 24px;
     box-shadow:
         0 10px 25px rgba(0, 0, 0, 0.22),
         0 5px 10px rgba(0, 0, 0, 0.15);
-    padding: 3rem 3.5rem;
-    margin-top: 8rem;
-    margin-right: 25rem;
+    padding: 2rem 2.5rem;
     font-weight: 500;
     color: var(--text-color);
-    transition: box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    transition:
+        box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
         transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
 }
 
-game:hover {
+
+#start-button {
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 2rem;
+    /* adjust to match leave-button */
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#start-button:hover {
+    transform: scale(1.05);
+}
+
+.pre-game-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    /* horizontal space between buttons */
+    margin-top: -3rem;
+    /* shifts the whole group upward */
+}
+
+/* game:hover {
     box-shadow:
         0 18px 40px rgba(0, 0, 0, 0.28),
         0 10px 20px rgba(0, 0, 0, 0.22);
     transform: translateY(-6px) scale(1.03);
-}
+} */
 
 /* Prompt */
 #prompt h2 {
@@ -378,8 +724,7 @@ game:hover {
     list-style: none;
     padding-left: 0;
     margin-top: 1.5rem;
-    max-height: 220px;
-    overflow-y: auto;
+    max-height: auto;
     border-radius: 18px;
     background: var(--card-bg);
     border: 2px solid var(--input-border);
@@ -423,7 +768,6 @@ game:hover {
 #order li b {
     color: var(--primary-color);
     font-weight: 700;
-    background: var(--accent-color);
     padding: 0.3rem 0.8rem;
     border-radius: 12px;
     letter-spacing: 0.03em;
@@ -481,7 +825,7 @@ game:hover {
         margin-top: 4rem;
     }
 
-    #bottom_panel {
+    #right-panel {
         position: static;
         width: 100%;
         max-width: 100%;
@@ -490,8 +834,8 @@ game:hover {
         gap: 1rem;
     }
 
-    #bottom_panel input[type="number"],
-    #bottom_panel input[type="text"] {
+    #right-panel input[type="number"],
+    #right-panel input[type="text"] {
         max-width: 100%;
     }
 

@@ -7,7 +7,7 @@ function enterGame() { action(EnterGame()) }
 function leaveGame() { action(LeaveGame()) }
 function startGame() { action(StartGameRequest()) }
 function changeName() {
-  action(Rename(prompt("Enter new name", state.players[label])))
+  action(Rename(prompt("Enter new name.", state.players[label])))
 }
 function typed(elem) {
   action(Typed(elem.value))
@@ -23,9 +23,6 @@ function debug(_) {}
 if(IS_HOST){
 	let script = document.createElement('script');
 	script.src = './server.js';
-	document.head.append(script)
-	script = document.createElement('script');
-	script.src = './host.js';
 	document.head.append(script)
 } else {
 	let script = document.createElement('script');
